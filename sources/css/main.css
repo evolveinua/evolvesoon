@@ -1,0 +1,32 @@
+@import 'https://fonts.googleapis.com/css?family=Fira+Sans:300,400,500,700&subset=cyrillic';
+
+h1, h2 {
+  font-size: 29px;
+}
+
+p {
+  font-size: 17px;
+}
+
+
+body {
+  margin: 0;
+  font-family: 'Fira Sans', sans-serif;
+  color: #393939;
+  overflow-x: hidden;
+}
+
+.header-wraper {
+  position: absolute;
+  top: 0;
+  padding: 35px;
+}
+
+.logo svg {
+  width: 75px;
+}
+
+.column-half {
+  width: 50%;
+  float: left;
+}
