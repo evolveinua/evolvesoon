@@ -1,27 +1,155 @@
+//Temp helper 
+function toggle () {
+  document.getElementById('modal').classList.toggle('modal_open');
+}
+
 window.onload = function() {
   
   let headArea = document.getElementById('canvas');
 
-  let windowWidth,
-      windowHeight;
+
+  function setHeaderColor() {   
+    headArea.style.backgroundColor = '#FACC13';  
+  }
   
-  function setHeaderSize() {
-    
-    windowWidth = window.innerWidth;
-    windowHeight = window.innerHeight;
-    
-    headArea.style.width = windowWidth + 'px';
-    headArea.style.height = windowHeight + 'px';
-    
+  setHeaderColor();
+
+  //Движуха. По свободе отрефакторить
+  var canvas = document.querySelector('canvas'),
+      ctx = canvas.getContext('2d'),
+      color = 'rgba(255, 255, 255, .3)';
+
+  let header = document.getElementById('header-wraper');
+
+  var w = canvas.parentNode.offsetWidth;
+  var h = canvas.parentNode.offsetHeight;
+  canvas.width = w;
+  canvas.height = h;
+  ctx.fillStyle = color;
+  ctx.lineWidth = .1;
+  ctx.strokeStyle = color;
+
+  var mousePosition = {
+    x: 10 * w / 100,
+    y: 10 * h / 100
+  };
+
+  function linesListener (e) {
+    mousePosition.x = e.clientX;
+    mousePosition.y = e.clientY;
+  }
+  
+ 
+  header.addEventListener('mousemove', linesListener);
+  
+  header.addEventListener('mouseleave', (e)=> {
+    mousePosition.x = w / 2;
+    mousePosition.y = h / 2;
+  })
+
+  var dots = {
+    num: 100,
+    distance: 200,
+    d_radius: 200,
+    velocity: -.9,
+    array: []
+  };
+
+  function Dot(){
+    this.x = Math.random() * w;
+    this.y = Math.random() * h;
+
+    this.vx = dots.velocity + Math.random();
+    this.vy = dots.velocity + Math.random();
+
+    this.radius = Math.random() * 2;
   }
 
-  function setHeaderColor() {
-    
-    headArea.style.backgroundColor = '#FACC13';
-  
+  Dot.prototype = {
+    create: function(){
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+      ctx.fill();
+    },
+
+    animate: function() {
+      for(let i = 0; i < dots.num; i++){
+
+        var dot = dots.array[i];
+
+        if(dot.y < 0 || dot.y > h){
+          dot.vx = dot.vx;
+          dot.vy = - dot.vy;
+        }
+        else if(dot.x < 0 || dot.x > w){
+          dot.vx = - dot.vx;
+          dot.vy = dot.vy;
+        }
+        dot.x += dot.vx;
+        dot.y += dot.vy;
+      }
+    },
+
+    line: function() {
+      for(let i = 0; i < dots.num; i++){
+        for(let j = 0; j < dots.num; j++){
+          let i_dot = dots.array[i];
+          let j_dot = dots.array[j];
+
+          if((i_dot.x - j_dot.x) < dots.distance && (i_dot.y - j_dot.y) < dots.distance && (i_dot.x - j_dot.x) > - dots.distance && (i_dot.y - j_dot.y) > - dots.distance){
+            if((i_dot.x - mousePosition.x) < dots.d_radius && (i_dot.y - mousePosition.y) < dots.d_radius && (i_dot.x - mousePosition.x) > - dots.d_radius && (i_dot.y - mousePosition.y) > - dots.d_radius){
+              ctx.beginPath();
+              ctx.moveTo(i_dot.x, i_dot.y);
+                   ctx.bezierCurveTo(i_dot.x, (h / 2), (w / 2), i_dot.y, j_dot.x, j_dot.y);
+              ctx.stroke();
+              ctx.closePath();
+            }
+          }
+        }
+      }
+    }
+  };
+
+  function createDots(){
+    ctx.clearRect(0, 0, w, h);
+    for(let i = 0; i < dots.num; i++){
+      dots.array.push(new Dot());
+      var dot = dots.array[i];
+      dot.create();
+    }
+    dot.line();
+    dot.animate();
   }
   
-  setHeaderSize();
-  setHeaderColor();
+  //Отрефакторил из соображений производительности
+  
+  
+  (function() {
+    var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
+                                window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+    window.requestAnimationFrame = requestAnimationFrame;
+  })();
+  
+  function step() {
+    ctx.clearRect(0, 0, w, h);
+    for(let i = 0; i < dots.num; i++){
+      dots.array.push(new Dot());
+      var dot = dots.array[i];
+      dot.create();
+    }
+    dot.line();
+    dot.animate();
+    requestAnimationFrame(step);
+  }
+  
+  step();
+
+  window.addEventListener('resize', function() {
+    canvas.width = w;
+    canvas.height = h;
+    ctx.fillStyle = color;
+    ctx.lineWidth = .1;
+    ctx.strokeStyle = color;
+  });
 
 }
