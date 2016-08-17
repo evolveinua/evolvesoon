@@ -1,18 +1,66 @@
-//Temp helper 
-function toggle () {
-  document.getElementById('modal').classList.toggle('modal_open');
-}
 
 window.onload = function() {
   
-  let headArea = document.getElementById('canvas');
+   //Модальная форма
 
-
-  function setHeaderColor() {   
-    headArea.style.backgroundColor = '#FACC13';  
+  function toggleModal () {
+    document.getElementById('modal').classList.toggle('modal_open');
   }
+  document.getElementById('toggle_form').addEventListener('click', toggleModal);
+  document.getElementById('modal__close').addEventListener('click', toggleModal);
+  //Таймер
+
+  const finalDate = new Date('2016/10/01 00:00:00');
+  let timer= new CountdownTimer('countdown',finalDate,'');
+  timer.countDown();
   
-  setHeaderColor();
+  //Выбор цвета страницы и модалки 
+
+  class Colorize {
+    constructor(arr) {
+      this.colorsInitial = arr;
+      this.colors = [];
+       
+      this.checkNoColors();
+
+      this.targets = document.querySelectorAll('.colorized');
+      this.setColors();
+    }
+    checkNoColors() {
+      if (this.colors.length === 0) {
+        this.colors = this.colorsInitial.map((color)=> color);
+      }
+    }
+    getRandomColor() {
+      const randomColorPosition = Math.round(Math.random() * (this.colors.length - 1));
+      const randomColor = this.colors[randomColorPosition];
+      console.log(randomColor + " " + randomColorPosition);
+      this.colors.splice(randomColorPosition, 1);
+      this.checkNoColors();
+      return randomColor;
+    }
+    setColors() {
+      //Возможно перепилить для уникального цвета каждому блоку
+      const length = this.targets.length;
+      const color = this.getRandomColor();
+      for (let i = 0; i < length; i++){
+        this.setColor(this.targets[i], color);
+      }
+    }
+    setColor(element, color) {   
+      element.style.backgroundColor = color;
+      if(color === '#facc13' || color === '#ccdc2a') {
+        element.classList.add('gray-text');
+      }else {
+        element.classList.remove('gray-text');
+      }
+    }
+  }
+  let colorize = new Colorize(['#4b4a9e', '#3da2db', '#ef5d67', '#facc13', '#ccdc2a']);
+  
+  // Дискотека
+
+  // setInterval(colorize.setColors.bind(colorize), 5000);
 
   //Движуха. По свободе отрефакторить
   var canvas = document.querySelector('canvas'),
@@ -50,7 +98,7 @@ window.onload = function() {
   var dots = {
     num: 100,
     distance: 200,
-    d_radius: 200,
+    d_radius: 150,
     velocity: -.9,
     array: []
   };

@@ -7,7 +7,8 @@ CountdownTimer.prototype={
   this.elem = document.getElementById(elm);
   this.tl = tl;
   this.mes = mes;
- },countDown:function(){
+ },
+ countDown:function(){
   var timer='';
   var today=new Date();
   var day=Math.floor((this.tl-today)/(24*60*60*1000));
@@ -17,11 +18,14 @@ CountdownTimer.prototype={
   var me=this;
 
   if( ( this.tl - today ) > 0 ){
-   timer += '<span class="number-wrapper"><div class="line"></div><div class="caption">DAYS</div><span class="number day">'+day+'</span></span>';
-   timer += '<span class="number-wrapper"><div class="line"></div><div class="caption">HOURS</div><span class="number hour">'+hour+'</span></span>';
-   timer += '<span class="number-wrapper"><div class="line"></div><div class="caption">MINS</div><span class="number min">'+this.addZero(min)+'</span></span><span class="number-wrapper"><div class="line"></div><div class="caption">SECS</div><span class="number sec">'+this.addZero(sec)+'</span></span>';
+   var timer = [];
+   timer.push(this.addZero(day));
+   timer.push(this.addZero(hour));
+   timer.push(this.addZero(min));
+   timer.push(this.addZero(sec));
+   timer = timer.join(':');
    this.elem.innerHTML = timer;
-   tid = setTimeout( function(){me.countDown();},10 );
+   var tid = setTimeout( function(){me.countDown();},10 );
   }else{
    this.elem.innerHTML = this.mes;
    return;

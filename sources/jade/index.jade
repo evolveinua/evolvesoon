@@ -10,33 +10,52 @@ html
     script(src="js/main.min.js")
     
   body
-    .header-wraper#header-wraper
+    .header-wraper.colorized#header-wraper
       canvas#canvas
       .header-wraper__inner
-        header
+        header.header-wrapper__logo
           a.logo(href="http://evolve.in.ua")
             include ./includes/logo.jade
-        main.row.clearfix
-          div.column-half
+        section.row.clearfix
+          div.header-wrapper__column
             h1
               | Создаем интерактивные путешествия по вашему бренду. 
             p
               | Повышаем запоминаемость продукта. Подчеркиваем уникальность бизнеса наших клиентов, используя самые современные технологии и творческий подход к интерактиву.
-          aside.column-half
-        footer.modal#modal
+          aside.header-wrapper__column.header-wrapper__column_right
+            h2
+              | К сожалению, сайт закрыт на реконструкцию.
+            p
+              | Но мы продолжаем работать. 
+              br
+              | Будем рады пообщатся лично!
+            .countdown#countdown
+        address.contact-info.clearfix
+          ul.social-links.clearfix
+            li.social-links__item.social-links__item_skype 
+              a.social-links__link(href='skype:evolve_web') 
+                .icon-skype-logo evolve_web
+            li.social-links__item.social-links__item_phone 
+              a.social-links__link(href='tel:+3809943556788') 
+                .icon-old-typical-phone +38 099 4355 67 88
+            li.social-links__item.social-links__item_mail 
+              a.social-links__link(href='mailto:info@evolve.in.ua') 
+                .icon-letter info@evolve.in.ua
+          button(type='button').button.contact-info__button#toggle_form Оставить заявку
+        footer.modal.colorized#modal
+          .modal__close.icon-cancel#modal__close
           form(action="/", method="post").modal__form#modal_form
             .form-group
-              input(type="text" required name="username")
+              input(type="text" required autofocus name="username")
               label.control-label(for="input") Имя
               i.bar
             .form-group
-              input(type="email" required)
-              label.control-label(for="input" name="email") E-mail
+              input(type="email" name="email" required)
+              label.control-label(for="input" ) E-mail
               i.bar
             .form-group
-              textarea(required)
-              label.control-label(for="textarea" name="message") Сообщение
+              textarea(required  name="message")
+              label.control-label(for="textarea") Сообщение
               i.bar
             .button-container
-              button.button(type="submit") 
-                span Submit
+              button.button.button_white(type="submit") Отправить заявку
