@@ -22,7 +22,8 @@ $email=$_POST['email'];
  
 $msg=$_POST['message']; 
  
-  
+if (isset($name, $email, $msg)) 
+{ 
  
 // Cобираем сообщение в файл
  
@@ -30,13 +31,13 @@ $msg=$_POST['message'];
 $msg=" 
  
  
-<p>Имя: $name</p> 
+Имя: $name 
  
  
-<p>E-mail: $email</p> 
+E-mail: $email 
  
  
-<p>Сообщение: $msg</p> 
+Сообщение: $msg 
  
  
 "; 
@@ -61,7 +62,7 @@ fwrite($f,"\n $msg ");
 fwrite($f,"\n ---------------"); 
  
 fclose($f);  
- 
+} 
 ?>
 <!DOCTYPE html>
 <html>
