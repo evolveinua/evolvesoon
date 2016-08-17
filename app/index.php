@@ -60,11 +60,7 @@ fwrite($f,"\n $msg ");
  
 fwrite($f,"\n ---------------"); 
  
-fclose($f); 
-
-exit; 
- 
- } 
+fclose($f);  
  
 ?>
 <!DOCTYPE html>
@@ -201,3 +197,4 @@ exit;
     </div>
   </body>
 </html>
+<?php exit(); ?>
